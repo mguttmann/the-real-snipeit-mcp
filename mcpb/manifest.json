@@ -1,0 +1,16 @@
+{
+  "manifest_version": "0.1",
+  "name": "the-real-snipeit-mcp",
+  "display_name": "Snipe-IT MCP",
+  "version": "0.1.5",
+  "description": "MCP server for the Snipe-IT REST API (100% coverage, read + write).",
+  "author": { "name": "Manuel Guttmann" },
+  "license": "MIT",
+  "server": { "type": "node", "entry_point": "dist/index.js" },
+  "user_config": [
+    { "key": "SNIPEIT_API_TOKEN", "title": "Snipe-IT API Token", "description": "Personal API token (JWT) from Snipe-IT > User > Manage API Keys.", "type": "secret", "required": true },
+    { "key": "SNIPEIT_API_BASE", "title": "API Base URL", "description": "Default: https://snipe-it.example.com/api/v1", "type": "string", "default": "https://snipe-it.example.com/api/v1" },
+    { "key": "SNIPEIT_CONFIRM_WRITES", "title": "Confirm destructive writes", "description": "If true, destructive tools require confirm: \"YES\".", "type": "boolean", "default": false },
+    { "key": "SNIPEIT_LOG_LEVEL", "title": "Log level", "description": "debug | info | warn | error", "type": "string", "default": "info" }
+  ]
+}
