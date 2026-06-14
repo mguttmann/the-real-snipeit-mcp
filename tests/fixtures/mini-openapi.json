@@ -1,0 +1,33 @@
+{
+  "openapi": "3.1.0",
+  "paths": {
+    "/hardware": {
+      "get": {
+        "operationId": "hardwareList",
+        "summary": "List hardware",
+        "parameters": [
+          { "name": "limit", "in": "query", "schema": { "type": "integer" } },
+          { "name": "offset", "in": "query", "schema": { "type": "integer" } }
+        ]
+      },
+      "post": {
+        "operationId": "hardwareStore",
+        "summary": "Create hardware",
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object", "required": ["name"], "properties": { "name": { "type": "string" } } } } }
+        }
+      }
+    },
+    "/hardware/{id}": {
+      "get": {
+        "operationId": "hardwareShow",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }]
+      },
+      "delete": {
+        "operationId": "hardwareDestroy",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }]
+      }
+    }
+  }
+}

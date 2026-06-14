@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Snipe-IT API question
+    url: https://snipe-it.readme.io/reference/api-overview
+    about: Questions about the Snipe-IT API itself (not this MCP wrapper) belong upstream.
+  - name: Model Context Protocol
+    url: https://modelcontextprotocol.io/
+    about: Questions about the MCP spec or other MCP clients.
