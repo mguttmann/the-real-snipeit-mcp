@@ -14,7 +14,6 @@ None open.
 
 - `minors-2026-10-27-1` (minor) `src/tools/destructiveGuard.ts` (`confirmShape`): the `confirm` parameter description says "Required when SNIPEIT_CONFIRM_WRITES=true" although the guard is also on when the variable is unset. Changing it moves the schema fingerprint of every write tool; do it with the next announced description change.
 - `minors-2026-10-27-2` (minor) `SECURITY.md:21`, `src/client/snipeitClient.ts` (`doRequest`): SECURITY.md says logs hold no personal data at `info`, but the client audit line `write METHOD <pathname>` logs the URL path of every write, and a `snipeit_raw_request` write path can carry arbitrary segments such as a tag, serial or name. Either log only the path template or soften the sentence.
-- `minors-2026-10-27-3` (minor) `README.md:42`, `SECURITY.md:21`: `SNIPEIT_REDACT_PII` is documented as masking personal data "in every tool result", but `maskPii` runs only in `jsonResult`; it does not cover `errorResult` texts (Snipe-IT messages can name users), write previews or resources such as `snipeit://me`. The docs should name that scope.
 - `minors-2026-10-27-4` (minor) `ARCHITECTURE.md`, `src/tools/destructiveGuard.ts` (`runGuarded`): under `SNIPEIT_REQUIRE_PREVIEW`, a `confirm: "YES"` call with no prior preview records the fingerprint itself (`remember()` runs on that path too), so an identical second `confirm: "YES"` call executes. This matches the documented "once per preview", but a model that blindly retries with YES gets through without a separate unconfirmed call; worth a sentence in ARCHITECTURE.md.
 - `minors-2026-10-27-5` (minor) `src/client/snipeitClient.ts` (`attempt`, `doRequest`): when the signal is already aborted, `attempt` throws CANCELLED or DEADLINE_EXCEEDED before any fetch, but `doRequest` still logs `write POST /path status 0 code CANCELLED`, so the audit line does not show whether the request was sent.
 - `minors-2026-10-27-6` (info) `src/tools/helpers.ts` (`callWrite`), generated write tools: `errorResult` details carry only `{statusCode}`; the new codes INVALID_PATH, CANCELLED, TIMEOUT and DEADLINE_EXCEEDED reach the caller only in the message text, while `snipeit_raw_request` also sets `details.code`. Existing pattern, no regression.
@@ -29,6 +28,18 @@ None open.
 - `release-review-2026-10-27-3` (minor) `tests/fixtures/tool-contract.json`: only the `source` label changed in the scrub, no tool is affected; AGENTS.md ties fixture changes to a deliberate contract change, and the CHANGELOG names the scrub only in general terms. Name the label change in the CHANGELOG or relax the AGENTS.md rule for metadata.
 - `release-review-2026-10-27-4` (minor) `AGENTS.md`, `docs/audit/2026-10-27-audit.md`: they cite commit 61608f0, which exists only on stale remote branches, not on `main`; once those branches are deleted (see `release-prep-2026-10-27-1`), readers cannot find it. Describe the change instead of the commit, or name the 0.2.0 release.
 - `release-review-2026-10-27-5` (minor) `.github/workflows/release.yml` (npm-publish job): the npm >= 11.5.1 step only checks the version and does not install a newer npm; a prerelease version string parses to NaN and passes. Not reachable with setup-node on Node 24; harden the comparison when the step is touched next.
+
+## From the 2026-10-27 secret redaction review (0.2.2)
+
+- `secrets-review-2026-10-27-1` (minor) `src/tools/helpers.ts` (`maskSecretText`), README, SECURITY.md, CHANGELOG: error-text masking only rewrites flat JSON string members whose key passes the secret rules; a status-envelope error formatted as `Name: text` from `messages` keyed by a custom field display name, or a 5xx body snippet echoing `custom_fields` in object form (secret under `value`), stays visible (loopback stub, not a reproduced real-world echo). The sentence "error texts that echo such a JSON field are masked too" claims more: narrow it to flat secret keys and `_snipeit_*` columns, or extend the text masking.
+- `secrets-review-2026-10-27-2` (minor) `src/tools/helpers.ts` (`SECRET_KEYS`): the `snipeit://settings` resource returns `ldap_pword` unmasked with the switch on (reproduced with a stub; documented in SECURITY.md). Add `pword` or `ldap_pword` to `SECRET_KEYS`.
+- `secrets-review-2026-10-27-3` (minor) `src/tools/helpers.ts` (`SECRET_KEYS`): outside custom fields `pwd`, `passwd`, `private_key`, `recovery_key` and `api key` (with a space) are not matched and stay visible (probed). Consider `passw|pwd|private[_-]?key`; breadth is an owner decision.
+- `secrets-review-2026-10-27-4` (minor) `src/tools/helpers.ts` (`maskSecretText`): numeric values (`"token": 12345`) and display-name keys (`"BitLocker Recovery Key": "S"`) in error text pass unmasked (probed with tsx); Snipe-IT formats errors from `messages`, not values, so hardening only.
+- `secrets-review-2026-10-27-5` (minor) `src/tools/destructiveGuard.ts` (`runGuarded`): the placeholder refusal checks `body` and the `query` argument but not a query string inside the `snipeit_raw_request` path, so a write to `/hardware/1?<secret column>=(redacted)` is sent. Contrived; cheap fix: run `redactedPaths` over `new URLSearchParams(path.split('?')[1])` with root `path`.
+- `secrets-review-2026-10-27-6` (minor) `src/tools/helpers.ts` (`redactBody`), write previews: with the switch on, previews mask only `SECRET_KEYS`, so a caller-supplied `_snipeit_*` secret column in the body is shown. Echoes the caller's own input only, but inconsistent with the flat `_snipeit_*` rule in `maskSecrets`.
+- `secrets-review-2026-10-27-8` (minor) SECURITY.md (known gaps): not covered by the rules and only documented there: a license product key in `serial`, secrets in free text such as `notes`, and broad over-masking of field names containing `pin` or `key`. Kept here as open items for the next run in this area.
+
+- `secrets-redteam-2026-10-27-1` (minor) `src/tools/helpers.ts` (maskLogMeta): a `log_meta` delivered as a JSON string or as a list of `{field, old, new}` is not masked; Snipe-IT's activity transformer returns an object, so hypothetical.
 
 ## Done 2026-10-27 (minors run)
 
@@ -80,6 +91,12 @@ One line per item that was open in "From the 2026-10-27 audit" and "From the 202
 - `redteam-2026-10-27-4` FIXED in a73a58c: SECURITY.md names the version in package.json on main instead of a fixed number.
 - `redteam-2026-10-27-5` FIXED in 387bddb: callList uses the PAGINATION constants.
 - `redteam-2026-10-27-6` FIXED in 6be9f95: an oversized result of an executed write says the write ran and must not be repeated.
+
+## Done 2026-10-27 (0.2.2 secret redaction run)
+
+- `minors-2026-10-27-3` FIXED in 0.2.2: resource reads now go through the same opt-in masks as tool results (`maskResult`); README and SECURITY.md name the scope (tool results and resources; not error texts or write previews).
+- `secrets-review-2026-10-27-7` FIXED in 0.2.2 (red team follow-up): array-form custom field entries are matched by `label` too; the same run masks `old` and `new` of secret `log_meta` entries (activity report, history) and secret `default_value` of custom field definitions.
+- `secrets-review-2026-10-27-9` FIXED in 0.2.2: the second example custom field name is now the generic "Local Admin Password (IT-Admin)" in tests and CHANGELOG.
 
 ## Owner decisions (not backlog work)
 

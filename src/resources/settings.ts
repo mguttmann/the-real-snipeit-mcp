@@ -1,5 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 import type { ServerContext } from "../server.js";
+import { maskResult } from "../tools/helpers.js";
 
 /**
  * `snipeit://settings` reads GET /settings. The vendored Snipe-IT API spec has no such
@@ -28,7 +29,9 @@ export function registerSettingsResource(server: McpServer, ctx: ServerContext):
         };
       }
       return {
-        contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(payload, null, 2) }],
+        contents: [
+          { uri: uri.href, mimeType: "application/json", text: JSON.stringify(maskResult(payload), null, 2) },
+        ],
       };
     },
   );

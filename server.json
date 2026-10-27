@@ -8,12 +8,12 @@
     "source": "github"
   },
   "websiteUrl": "https://github.com/mguttmann/the-real-snipeit-mcp#readme",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "the-real-snipeit-mcp",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
@@ -76,6 +76,13 @@
         {
           "name": "SNIPEIT_REDACT_PII",
           "description": "true masks personal data (email, username, names of people, phone, address, employee number) in tool results.",
+          "isRequired": false,
+          "format": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "SNIPEIT_REDACT_SECRETS",
+          "description": "true masks secrets (password/secret/token/api_key fields, secret custom field values) in tool results with (redacted).",
           "isRequired": false,
           "format": "boolean",
           "default": "false"

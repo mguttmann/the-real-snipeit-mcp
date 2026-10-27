@@ -99,6 +99,7 @@ const ConfigSchema = z.object({
   maxResultBytes: z.number().int().min(MIN_MAX_RESULT_BYTES).default(DEFAULT_MAX_RESULT_BYTES),
   callDeadlineMs: z.number().int().min(0).default(0),
   redactPii: z.boolean().default(false),
+  redactSecrets: z.boolean().default(false),
   readOnly: z.boolean().default(false),
   requirePreview: z.boolean().default(false),
   /** Startup warnings other than the write guard's (logged once by `logConfigWarnings`). */
@@ -128,6 +129,8 @@ function fieldError(field: string, msg: string): never {
  * - `SNIPEIT_CALL_DEADLINE_MS` (integer >= 0, default 0 = none): overall deadline for one
  *   tool call, across retries, backoffs and `all: true` pagination
  * - `SNIPEIT_REDACT_PII` (switch, default off): mask personal data in tool results
+ * - `SNIPEIT_REDACT_SECRETS` (switch, default off): mask secret fields and secret custom
+ *   field values in tool results and resources
  * - `SNIPEIT_READ_ONLY` (switch, default off): refuse every write at runtime
  * - `SNIPEIT_REQUIRE_PREVIEW` (switch, default off): `confirm: "YES"` executes only after a
  *   preview of the identical request (needs the write guard on)
@@ -189,6 +192,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   const guard = parseConfirmWrites(env.SNIPEIT_CONFIRM_WRITES);
   const pii = parseSwitch("SNIPEIT_REDACT_PII", env.SNIPEIT_REDACT_PII);
   if (pii.warning) warnings.push(pii.warning);
+  const secrets = parseSwitch("SNIPEIT_REDACT_SECRETS", env.SNIPEIT_REDACT_SECRETS);
+  if (secrets.warning) warnings.push(secrets.warning);
   const readOnly = parseSwitch("SNIPEIT_READ_ONLY", env.SNIPEIT_READ_ONLY);
   if (readOnly.warning) warnings.push(readOnly.warning);
   const requirePreview = parseSwitch("SNIPEIT_REQUIRE_PREVIEW", env.SNIPEIT_REQUIRE_PREVIEW);
@@ -209,6 +214,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     maxResultBytes,
     callDeadlineMs,
     redactPii: pii.enabled,
+    redactSecrets: secrets.enabled,
     readOnly: readOnly.enabled,
     requirePreview: requirePreview.enabled,
     warnings,

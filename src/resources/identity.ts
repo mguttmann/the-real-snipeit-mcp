@@ -1,5 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 import type { ServerContext } from "../server.js";
+import { maskResult } from "../tools/helpers.js";
 
 export function registerIdentityResource(server: McpServer, ctx: ServerContext): void {
   server.registerResource(
@@ -13,7 +14,13 @@ export function registerIdentityResource(server: McpServer, ctx: ServerContext):
     async (uri) => {
       const res = await ctx.client.request("GET", "/users/me");
       return {
-        contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(res.data, null, 2) }],
+        contents: [
+          {
+            uri: uri.href,
+            mimeType: "application/json",
+            text: JSON.stringify(maskResult(res.data), null, 2),
+          },
+        ],
       };
     },
   );

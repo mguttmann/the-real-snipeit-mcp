@@ -67,6 +67,54 @@ function synthPathParam(name: string): ParameterSpec {
   };
 }
 
+/** GETs without a path parameter that return one record, not a collection. */
+const NOT_COLLECTIONS = new Set(["/users/me"]);
+
+const ADDED = "not declared in the spec for this operation, added by codegen";
+
+/**
+ * The paging, search and sort parameters every Snipe-IT list endpoint accepts. Added to a
+ * collection GET (no path parameter) where the spec does not declare them; all optional
+ * and without a default, so a call without them sends what it sent before.
+ */
+const LIST_PARAMS: readonly ParameterSpec[] = [
+  {
+    name: "limit",
+    in: "query",
+    required: false,
+    schema: { type: "integer" },
+    description: `Page size (${ADDED})`,
+  },
+  {
+    name: "offset",
+    in: "query",
+    required: false,
+    schema: { type: "integer" },
+    description: `Rows to skip (${ADDED})`,
+  },
+  {
+    name: "search",
+    in: "query",
+    required: false,
+    schema: { type: "string" },
+    description: `Text search (${ADDED})`,
+  },
+  {
+    name: "sort",
+    in: "query",
+    required: false,
+    schema: { type: "string" },
+    description: `Column to sort by (${ADDED})`,
+  },
+  {
+    name: "order",
+    in: "query",
+    required: false,
+    schema: { type: "string", enum: ["asc", "desc"] },
+    description: `Sort order (${ADDED})`,
+  },
+];
+
 interface OpenApiOperation {
   operationId?: string;
   summary?: string;
@@ -93,7 +141,8 @@ interface OpenApiDoc {
  * (e.g. `get_widgets_by_id`).
  *
  * Path/query parameters are separated, request body schema is extracted from
- * `requestBody.content["application/json"].schema` if present.
+ * `requestBody.content["application/json"].schema` if present. Collection GETs (no path
+ * parameter, not in `NOT_COLLECTIONS`) get the optional `LIST_PARAMS` the spec leaves out.
  */
 export function parseOpenapi(spec: OpenApiDoc): CatalogEntry[] {
   const out: CatalogEntry[] = [];
@@ -117,12 +166,15 @@ export function parseOpenapi(spec: OpenApiDoc): CatalogEntry[] {
       }
       // Deduplicate query params by name (spec bug: some paths list the same param twice)
       const seenQueryNames = new Set<string>();
-      const queryParams = allParams.filter((p) => {
+      const queryParams: ParameterSpec[] = allParams.filter((p) => {
         if (p.in !== "query") return false;
         if (seenQueryNames.has(p.name)) return false;
         seenQueryNames.add(p.name);
         return true;
       });
+      if (method === "GET" && pathParams.length === 0 && !NOT_COLLECTIONS.has(path)) {
+        for (const p of LIST_PARAMS) if (!seenQueryNames.has(p.name)) queryParams.push({ ...p });
+      }
       const bodySchema = op.requestBody?.content?.["application/json"]?.schema;
       const entry: CatalogEntry = {
         toolName: name,

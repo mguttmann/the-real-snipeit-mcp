@@ -1,5 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 import type { ServerContext } from "../server.js";
+import { maskResult } from "../tools/helpers.js";
 import { autoPaginate } from "../client/pagination.js";
 import { PAGINATION } from "../constants.js";
 
@@ -103,7 +104,13 @@ export function registerSummaryResource(server: McpServer, ctx: ServerContext): 
           ...(errors.length > 0 ? { partial: true, errors } : {}),
         };
         return {
-          contents: [{ uri: uri.href, mimeType: "application/json", text: JSON.stringify(payload, null, 2) }],
+          contents: [
+            {
+              uri: uri.href,
+              mimeType: "application/json",
+              text: JSON.stringify(maskResult(payload), null, 2),
+            },
+          ],
         };
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);

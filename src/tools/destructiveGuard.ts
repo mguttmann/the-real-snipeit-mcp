@@ -2,6 +2,10 @@
  * Destructive-write safety gate.
  *
  * Every write tool runs through {@link runGuarded}:
+ * - a body or query with a value that is exactly the redaction placeholder `(redacted)`
+ *   is refused first (`REDACTED_PLACEHOLDER`), whatever the switches say; nothing is
+ *   previewed or sent. A record read with `SNIPEIT_REDACT_SECRETS` (or copied from a
+ *   preview) and written back unchanged would otherwise overwrite the real secret.
  * - `SNIPEIT_READ_ONLY` on: the write is refused with a tool error (`READ_ONLY`); nothing
  *   is sent. Tools stay registered so the gateway's tool list does not change.
  * - write guard on (`SNIPEIT_CONFIRM_WRITES`, the default): a call without
@@ -18,7 +22,7 @@
  */
 import { createHash } from "node:crypto";
 import { z } from "zod";
-import { errorResult, redactBody } from "./helpers.js";
+import { errorResult, redactBody, redactedPaths, REDACTED_PLACEHOLDER } from "./helpers.js";
 import type { CallToolResult } from "@modelcontextprotocol/server";
 import type { Config } from "../config.js";
 import type { Logger } from "../utils/logger.js";
@@ -43,6 +47,11 @@ export interface WriteRequestDescription {
   query?: Record<string, unknown> | undefined;
   body?: unknown;
   toolName?: string;
+  /**
+   * Values checked for the redaction placeholder, keyed by the root of the reported path.
+   * Default `{ body, query }`; a tool whose body is not the caller's input names the input.
+   */
+  checked?: Record<string, unknown>;
 }
 
 /** Guard switches; fields other than `confirmWrites` are optional so callers can pass any config. */
@@ -123,6 +132,17 @@ export async function runGuarded(
   const audit = (event: string) =>
     logger?.info(`write ${event}`, { tool: req.toolName, method: req.method, url: url.split("?")[0] });
 
+  const checked = req.checked ?? { body: req.body, query: req.query };
+  const placeholders = Object.entries(checked).flatMap(([root, v]) => redactedPaths(v, root));
+  if (placeholders.length > 0) {
+    audit("refused (redaction placeholder)");
+    return errorResult(
+      `${req.toolName ?? "this tool"} refused: ${placeholders.join(", ")} ${placeholders.length === 1 ? "is" : "are"} "${REDACTED_PLACEHOLDER}", ` +
+        "the placeholder of a redacted value (write preview, SNIPEIT_REDACT_SECRETS or SNIPEIT_REDACT_PII), and would overwrite the real value. " +
+        "Nothing was sent. Set the real value or omit the field.",
+      { code: "REDACTED_PLACEHOLDER", paths: placeholders },
+    );
+  }
   if (cfg.readOnly) {
     audit("refused (SNIPEIT_READ_ONLY)");
     return errorResult(

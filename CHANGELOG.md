@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-10-27
+
+Security release. The gateway contract holds: every tool name, required parameter, top-level default and annotation is unchanged and the tool count stays 183 (`tests/unit/toolContract.test.ts`). With no new variable set, results are as in 0.2.1; the one change every caller sees is the refusal of writes that carry the placeholder `(redacted)`.
+
+### Security
+- Snipe-IT custom fields can hold secrets, for example a BitLocker recovery key or a local administrator password on an asset; 0.2.1 returned their values in every hardware result (`snipeit_list_hardware`, the generated tools, `snipeit_raw_request`), and `SNIPEIT_REDACT_PII` does not touch them. The new opt-in `SNIPEIT_REDACT_SECRETS` masks them (see Added). It is off by default, so results are unchanged until an operator sets it; deployments that hand Snipe-IT data with such fields to a model should turn it on.
+
+### Added
+- New optional environment variable `SNIPEIT_REDACT_SECRETS` (default `false`, same values as the other switches; an unrecognised value turns it on and logs a warning). When on, every tool result and resource read replaces with `(redacted)`: the value of every key matching `password|secret|token|api[_-]?key` at any depth, and the `value` of every `custom_fields` entry (object or array form) whose display name or database column (`_snipeit_*`, also as a flat key in write responses) matches `passw|kennw|secret|token|key|recovery|bitlocker|pin|laps` (any case); `old` and `new` of every `log_meta` entry (action log history, `/reports/activity`) whose display name or column matches either rule are masked each, so the change itself stays visible, and so is the `default_value` of such a custom field in model `default_fieldset_values` and in the fieldset fields per model. Null and empty values stay. Error texts returned to the model that echo such a JSON field are masked too. Both rules are exported once from `src/tools/helpers.ts` (`SECRET_KEYS`, `SECRET_CUSTOM_FIELD`); `tests/unit/secretRedaction.test.ts` holds the behaviour against a hardware list and an activity report with the custom fields "BitLocker Recovery Key" and "Local Admin Password (IT-Admin)".
+
+### Changed
+- Behaviour change for callers, always on: every write tool (hand-written, generated, `snipeit_bulk_checkout` and `snipeit_raw_request` with a method other than `GET`) refuses a body or query in which any value, at any depth of objects and arrays, is exactly `(redacted)`, the placeholder of write previews, `SNIPEIT_REDACT_SECRETS` and `SNIPEIT_REDACT_PII`. The result is a tool error with `details.code: "REDACTED_PLACEHOLDER"` and `details.paths` (for example `body._snipeit_bitlocker_recovery_key_5`, `body[2].password`, `query.token`; `snipeit_bulk_checkout` reports `items[2].note`); the message names the paths, never values. The check runs first, before the preview, `SNIPEIT_READ_ONLY` and the request, so nothing is previewed, no `SNIPEIT_REQUIRE_PREVIEW` fingerprint is recorded and nothing is sent: a preview would show the placeholder like any redacted field and invite a `confirm: "YES"` that overwrites the secret. It does not depend on `SNIPEIT_REDACT_SECRETS`, because the placeholder can never be a real value and can come from another session or server. A string that only contains `(redacted)` is sent as before. 0.2.1 sent such a body, so an asset read with redaction and written back unchanged would have set its recovery key to `(redacted)`.
+- `SNIPEIT_REDACT_PII` now also applies to the resources `snipeit://me`, `snipeit://settings` and `snipeit://hardware/summary` (before: tool results only); README and SECURITY.md name its scope (not error texts, not write previews). Closes `minors-2026-10-27-3`.
+- Server instructions: one line on the `REDACTED_PLACEHOLDER` refusal. Tool schemas are unchanged by these entries.
+- Generated collection GETs (no path parameter) offer the optional list parameters `limit`, `offset`, `search`, `sort` and `order` (`asc`/`desc`) where the vendored spec does not declare them (`src/codegen/parseOpenapi.ts`, `LIST_PARAMS`); they have no default, so a call without them sends what it sent before. `/users/me` is left out (one record). Schema fingerprint changes (input schema only; names, required parameters, defaults and annotations unchanged): `snipeit_gen_backups_1`, `snipeit_gen_companies`, `snipeit_gen_departments`, `snipeit_gen_fields`, `snipeit_gen_fields_1`, `snipeit_gen_groups_1`, `snipeit_gen_hardwareauditdue`, `snipeit_gen_hardwareauditoverdue`, `snipeit_gen_manufacturers`, `snipeit_gen_suppliers`.
+
 ## [0.2.1] - 2026-10-27
 
 Closes the minors of the 2026-10-27 audit and modernization run (`docs/BACKLOG.md`, "Done 2026-10-27 (minors run)"). The gateway contract holds: every tool name, required parameter, top-level default and annotation is unchanged and the tool count stays 183 (`tests/unit/toolContract.test.ts`). With no new variable set, writes, the write guard and `confirm: "YES"` behave as in 0.2.0. It also prepares the repository to be public and the npm package to be published from GitHub Actions.
@@ -203,6 +219,7 @@ Upgrade notes for npm users of 0.1.7 and older: Node.js 22.12 or newer is requir
 - Prompts: `inventory-audit`, `user-onboarding`, `license-health`.
 - MCPB bundle for one-click Claude Desktop install.
 
+[0.2.2]: https://github.com/mguttmann/the-real-snipeit-mcp/releases/tag/v0.2.2
 [0.2.1]: https://github.com/mguttmann/the-real-snipeit-mcp/releases/tag/v0.2.1
 [0.2.0]: https://github.com/mguttmann/the-real-snipeit-mcp/releases/tag/v0.2.0
 [0.1.7]: https://github.com/mguttmann/the-real-snipeit-mcp/releases/tag/v0.1.7

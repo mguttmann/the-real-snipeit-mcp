@@ -1,6 +1,6 @@
 {
   "name": "the-real-snipeit-mcp",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "mcpName": "io.github.mguttmann/the-real-snipeit-mcp",
   "description": "Unofficial MCP server for the Snipe-IT REST API: one generated tool per OpenAPI operation (read + write), hand-written wrappers for common workflows, stdio transport.",
   "license": "MIT",

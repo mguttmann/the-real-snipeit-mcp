@@ -46,8 +46,9 @@
 │  • callWrite(ctx, args, toolName, method, path, body?)         │
 │  • callList(client, path, args): supports all?: boolean,       │
 │    stops at SNIPEIT_MAX_RESULT_BYTES (truncated, next_offset)  │
-│  • jsonResult(data): caps every result at the same size,       │
-│    always valid JSON                                           │
+│  • jsonResult(data): opt-in masks (SNIPEIT_REDACT_SECRETS,     │
+│    SNIPEIT_REDACT_PII), then caps every result at the same     │
+│    size, always valid JSON                                     │
 │  • runGuarded(...): gates writes unless the guard is disabled  │
 └─────────────────────────────────────────────────────────────────┘
             │
@@ -175,6 +176,7 @@ Every destructive tool routes through `src/tools/destructiveGuard.ts`:
 runGuarded(cfg, args, { toolName, method, url, query, body }, execute, logger)
 ```
 
+- First, always: a body or query with a value that is exactly `(redacted)` (`REDACTED_PLACEHOLDER`, the placeholder of previews, `SNIPEIT_REDACT_SECRETS` and `SNIPEIT_REDACT_PII`) is refused with `details.code: "REDACTED_PLACEHOLDER"` and `details.paths`; nothing is previewed, fingerprinted or sent. It runs before the preview so a model never sees a preview of a write that would overwrite a secret with the placeholder, and a `SNIPEIT_REQUIRE_PREVIEW` fingerprint is never recorded for it. `snipeit_bulk_checkout` checks its `items` (paths `items[i].field`).
 - `SNIPEIT_READ_ONLY` on: the write is refused with an `isError` result (`details.code: "READ_ONLY"`); nothing is sent. All tools stay registered, so the tool list does not change.
 - `SNIPEIT_CONFIRM_WRITES` set to `false`, `0`, `no` or `off` (trimmed, any case): `execute()` runs directly. Unset or `true`/`1`/`yes`/`on` keeps the guard on; an empty or unrecognised value keeps it on too and logs a warning (fail closed). `logGuardState` logs the effective state once at startup.
 - Guard on: a write returns a **redacted preview** unless `args.confirm === "YES"`. With the opt-in `SNIPEIT_REQUIRE_PREVIEW`, `confirm: "YES"` executes only when the identical request (tool, method, URL, query, body; key order ignored) was previewed in the last 10 minutes, once per preview; the fingerprints live in memory per server config.
@@ -225,7 +227,7 @@ src/
     generateAll.ts        # pure generation: spec -> file name -> source
     generate.ts           # CLI: writes generateAll() into src/tools/generated
   tools/
-    helpers.ts            # callJson, callWrite, callList, jsonResult, errorResult, redactBody, maskPii
+    helpers.ts            # callJson, callWrite, callList, jsonResult, errorResult, redactBody, maskPii, maskSecrets, redactedPaths
     destructiveGuard.ts   # runGuarded (read-only, guard, preview binding) + confirmShape
     rawRequest.ts         # snipeit_raw_request
     identity.ts           # snipeit_me

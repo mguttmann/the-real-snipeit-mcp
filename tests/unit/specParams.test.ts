@@ -158,3 +158,20 @@ describe("prompts use fields and filters that exist", () => {
     expect(all).toMatch(/status: "RTD"|status=RTD/);
   });
 });
+
+describe("generated collection GETs take list parameters (0.2.2)", () => {
+  it("snipeit_gen_manufacturers offers and forwards limit, offset, search, sort and order", async () => {
+    const p = props("snipeit_gen_manufacturers");
+    for (const k of ["limit", "offset", "search", "sort", "order"]) expect(p).toHaveProperty(k);
+    expect(tools.get("snipeit_gen_manufacturers")!.inputSchema.required ?? []).toEqual([]);
+    const [method, path, opts] = await call("snipeit_gen_manufacturers", {
+      limit: 5,
+      offset: 10,
+      search: "HP",
+      sort: "name",
+      order: "asc",
+    });
+    expect([method, path]).toEqual(["GET", "/manufacturers"]);
+    expect(opts.query).toMatchObject({ limit: 5, offset: 10, search: "HP", sort: "name", order: "asc" });
+  });
+});

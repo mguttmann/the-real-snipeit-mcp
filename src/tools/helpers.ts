@@ -3,6 +3,9 @@
  *
  * - {@link jsonResult} / {@link errorResult}: wrap data/error into MCP `CallToolResult` shape.
  * - {@link redactBody}: recursively redact secret-shaped fields before logging or previewing.
+ * - {@link maskSecrets} / {@link maskResult}: opt-in redaction of Snipe-IT data in results
+ *   (`SNIPEIT_REDACT_SECRETS`, `SNIPEIT_REDACT_PII`).
+ * - {@link redactedPaths}: paths of the redaction placeholder in a write body (always refused).
  * - {@link callJson}: perform a GET, convert errors to `errorResult`, attach pagination hint.
  * - {@link callWrite}: perform POST/PUT/PATCH/DELETE through `runGuarded` (confirm-write gate).
  * - {@link callList}: list-aware fetcher; with `all: true` auto-paginates up to 10 000 rows
@@ -22,10 +25,160 @@ import { redactSecrets } from "../utils/logger.js";
 
 let maxResultBytes = DEFAULT_MAX_RESULT_BYTES;
 let redactPii = false;
+let redactSecretValues = false;
 
 /** Switch opt-in PII masking of tool results on or off (`SNIPEIT_REDACT_PII`). Called once by `buildServer`. */
 export function setRedactPii(on: boolean): void {
   redactPii = on;
+}
+
+/** Switch opt-in secret masking of tool results on or off (`SNIPEIT_REDACT_SECRETS`). Called once by `buildServer`. */
+export function setRedactSecrets(on: boolean): void {
+  redactSecretValues = on;
+}
+
+/**
+ * The value that replaces a secret in write previews and, with `SNIPEIT_REDACT_SECRETS`
+ * or `SNIPEIT_REDACT_PII`, in results. Always the whole value. Write tools refuse a body
+ * or query that contains it (see {@link redactedPaths} and `runGuarded`).
+ */
+export const REDACTED_PLACEHOLDER = "(redacted)";
+
+/** Keys whose values are secrets wherever they appear (write previews; results with SNIPEIT_REDACT_SECRETS). */
+export const SECRET_KEYS = /(password|secret|token|api[_-]?key)/i;
+
+/**
+ * Custom fields whose `value` is a secret, matched against the display name and the
+ * database column (`_snipeit_<name>_<id>`). Deliberately broad: a harmless field whose
+ * name contains one of these words (for example "Keyboard layout") is masked too.
+ */
+export const SECRET_CUSTOM_FIELD = /(passw|kennw|secret|token|key|recovery|bitlocker|pin|laps)/i;
+
+/** Prefix of the database column of a Snipe-IT custom field. */
+const CUSTOM_FIELD_COLUMN = /^_snipeit_/;
+
+const hasValue = (v: unknown) => v !== null && v !== undefined && v !== "";
+
+/** True for a key whose value is a secret: SECRET_KEYS, or a custom field column matching SECRET_CUSTOM_FIELD. */
+function isSecretKey(k: string): boolean {
+  return SECRET_KEYS.test(k) || (CUSTOM_FIELD_COLUMN.test(k) && SECRET_CUSTOM_FIELD.test(k));
+}
+
+const isObj = (x: unknown): x is Record<string, unknown> =>
+  x !== null && typeof x === "object" && !Array.isArray(x);
+
+/** True for a custom field display name, column or key that names a secret. */
+const isSecretName = (n: unknown): boolean =>
+  typeof n === "string" && (SECRET_CUSTOM_FIELD.test(n) || SECRET_KEYS.test(n));
+
+/** True when one of the keys that identify a custom field in an object names a secret. */
+function namesSecretField(entry: Record<string, unknown>, displayName?: string): boolean {
+  return [displayName, entry.name, entry.label, entry.field, entry.db_column, entry.db_column_name].some(
+    isSecretName,
+  );
+}
+
+/** One custom field entry (`{field, value, ...}`): mask `value` when its name or column is secret. */
+function maskCustomField(entry: Record<string, unknown>, displayName: string | undefined): unknown {
+  const secret = namesSecretField(entry, displayName);
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(entry)) {
+    out[k] = k === "value" && secret && hasValue(v) ? REDACTED_PLACEHOLDER : maskSecrets(v);
+  }
+  return out;
+}
+
+/** `custom_fields` in the object form (`{"<display name>": {field, value}}`) or as an array of entries. */
+function maskCustomFields(v: unknown): unknown {
+  if (Array.isArray(v)) return v.map((e) => (isObj(e) ? maskCustomField(e, undefined) : maskSecrets(e)));
+  if (!isObj(v)) return maskSecrets(v);
+  const out: Record<string, unknown> = {};
+  for (const [name, entry] of Object.entries(v)) {
+    if (isObj(entry)) out[name] = maskCustomField(entry, name);
+    else out[name] = isSecretName(name) && hasValue(entry) ? REDACTED_PLACEHOLDER : maskSecrets(entry);
+  }
+  return out;
+}
+
+/**
+ * `log_meta` of an action log row (`{"<display name or column>": {old, new}}` or a scalar):
+ * for a secret name, `old` and `new` are each masked so the change itself stays visible.
+ */
+function maskLogMeta(v: unknown): unknown {
+  if (!isObj(v)) return maskSecrets(v);
+  const out: Record<string, unknown> = {};
+  for (const [name, entry] of Object.entries(v)) {
+    if (!isSecretName(name)) out[name] = maskSecrets(entry);
+    else if (isObj(entry) && ("old" in entry || "new" in entry)) {
+      const change: Record<string, unknown> = {};
+      for (const [k, e] of Object.entries(entry))
+        change[k] = (k === "old" || k === "new") && hasValue(e) ? REDACTED_PLACEHOLDER : maskSecrets(e);
+      out[name] = change;
+    } else out[name] = hasValue(entry) ? REDACTED_PLACEHOLDER : entry;
+  }
+  return out;
+}
+
+/**
+ * Replace secrets in a Snipe-IT result with {@link REDACTED_PLACEHOLDER}
+ * (`SNIPEIT_REDACT_SECRETS`): the value of every key matching {@link SECRET_KEYS} at any
+ * depth, of every custom field column (`_snipeit_*`) matching {@link SECRET_CUSTOM_FIELD},
+ * `value` of every `custom_fields` entry whose display name or column matches it,
+ * `old` and `new` of every `log_meta` entry (action log, activity report) whose name
+ * matches either rule, and `default_value` of every custom field definition whose name or
+ * column matches (model `default_fieldset_values`, fieldset fields per model).
+ * Null and empty values stay, so the result still shows that a field is unset.
+ */
+export function maskSecrets(input: unknown): unknown {
+  if (Array.isArray(input)) return input.map(maskSecrets);
+  if (!isObj(input)) return input;
+  const secretDefault = "default_value" in input && namesSecretField(input);
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(input)) {
+    if (k === "custom_fields") out[k] = maskCustomFields(v);
+    else if (k === "log_meta") out[k] = maskLogMeta(v);
+    else
+      out[k] =
+        (isSecretKey(k) || (k === "default_value" && secretDefault)) && hasValue(v)
+          ? REDACTED_PLACEHOLDER
+          : maskSecrets(v);
+  }
+  return out;
+}
+
+/** Apply the opt-in result masks (`SNIPEIT_REDACT_SECRETS`, `SNIPEIT_REDACT_PII`) to Snipe-IT data. */
+export function maskResult(data: unknown): unknown {
+  if (redactSecretValues) data = maskSecrets(data);
+  if (redactPii) data = maskPii(data);
+  return data;
+}
+
+/** A JSON string member in text: `"key": "value"` (escapes inside the value allowed). */
+const JSON_STRING_MEMBER = /"([^"\\]+)"(\s*:\s*)"((?:[^"\\]|\\.)*)"/g;
+
+/** With `SNIPEIT_REDACT_SECRETS` on: mask secret JSON members an error text echoes. */
+function maskSecretText(text: string): string {
+  if (!redactSecretValues) return text;
+  return text.replace(JSON_STRING_MEMBER, (m, k: string, sep: string, v: string) =>
+    isSecretKey(k) && v !== "" ? `"${k}"${sep}"${REDACTED_PLACEHOLDER}"` : m,
+  );
+}
+
+const PLAIN_KEY = /^[A-Za-z_$][\w$]*$/;
+
+/**
+ * JSON paths (`body.custom_fields["BitLocker Key"].value`, `body.items[2].password`) of
+ * every value in `input` that is exactly {@link REDACTED_PLACEHOLDER}, at any depth of
+ * objects and arrays. Only paths are returned, never values.
+ */
+export function redactedPaths(input: unknown, path = "body"): string[] {
+  if (input === REDACTED_PLACEHOLDER) return [path];
+  if (Array.isArray(input)) return input.flatMap((v, i) => redactedPaths(v, `${path}[${i}]`));
+  if (input && typeof input === "object")
+    return Object.entries(input).flatMap(([k, v]) =>
+      redactedPaths(v, PLAIN_KEY.test(k) ? `${path}.${k}` : `${path}[${JSON.stringify(k)}]`),
+    );
+  return [];
 }
 
 /** Keys whose values are personal data wherever they appear. */
@@ -59,7 +212,7 @@ export function maskPii(input: unknown): unknown {
     const sensitive = PII_KEYS.has(k) || (person && k === "name");
     out[k] =
       sensitive && v !== null && v !== undefined && v !== "" && typeof v !== "object"
-        ? "(redacted)"
+        ? REDACTED_PLACEHOLDER
         : maskPii(v);
   }
   return out;
@@ -188,7 +341,7 @@ export interface ResultOptions {
  * truncation marker (see {@link capResult}).
  */
 export function jsonResult(data: unknown, opts: ResultOptions = {}): CallToolResult {
-  if (redactPii) data = maskPii(data);
+  data = maskResult(data);
   const out: { data: unknown; pagination?: PaginationHint } = { data };
   if (opts.pagination) out.pagination = opts.pagination;
   let text = serialize(out);
@@ -202,7 +355,7 @@ export function jsonResult(data: unknown, opts: ResultOptions = {}): CallToolRes
  * `details` is JSON-serialized into the body and typically contains `{ statusCode, code }`.
  */
 export function errorResult(message: string, details?: unknown): CallToolResult {
-  const payload: { error: string; details?: unknown } = { error: redactSecrets(message) };
+  const payload: { error: string; details?: unknown } = { error: maskSecretText(redactSecrets(message)) };
   if (details !== undefined) payload.details = details;
   return { content: [{ type: "text", text: JSON.stringify(payload, null, 2) }], isError: true };
 }
@@ -339,11 +492,9 @@ export async function callWrite(
   );
 }
 
-const SECRET_KEYS = /(password|secret|token|api[_-]?key)/i;
-
 /**
  * Recursively walk an object/array and replace values whose keys match
- * `password|secret|token|api[_-]?key` (case-insensitive) with the literal `"(redacted)"`.
+ * {@link SECRET_KEYS} (case-insensitive) with {@link REDACTED_PLACEHOLDER}.
  * Used for write previews so the LLM cannot leak secrets through preview output.
  */
 export function redactBody(input: unknown): unknown {
@@ -351,7 +502,7 @@ export function redactBody(input: unknown): unknown {
   if (input && typeof input === "object") {
     const out: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(input)) {
-      out[k] = SECRET_KEYS.test(k) ? "(redacted)" : redactBody(v);
+      out[k] = SECRET_KEYS.test(k) ? REDACTED_PLACEHOLDER : redactBody(v);
     }
     return out;
   }

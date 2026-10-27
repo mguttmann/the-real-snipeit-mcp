@@ -43,6 +43,7 @@ export function registerBulkTools(server: McpServer, ctx: ServerContext): void {
           toolName: "snipeit_bulk_checkout",
           method: "POST",
           url: `(one POST per item, ${a.items.length} in total; see body)`,
+          checked: { items: a.items },
           // The concrete requests, in order, exactly as they will be sent.
           body: a.items.map(({ asset_id, ...rest }) => ({
             method: "POST",

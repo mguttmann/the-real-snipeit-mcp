@@ -91,3 +91,55 @@ describe("parseOpenapi", () => {
     ]);
   });
 });
+
+describe("collection GETs get the list parameters the spec leaves out", () => {
+  const LIST = ["limit", "offset", "search", "sort", "order"];
+  const spec = {
+    openapi: "3.1.0",
+    paths: {
+      "/manufacturers": {
+        get: {
+          operationId: "manufacturers",
+          parameters: [{ name: "name", in: "query", schema: { type: "string" } }],
+        },
+        post: { operationId: "manufacturers-store" },
+      },
+      "/models": {
+        get: {
+          operationId: "models",
+          parameters: [{ name: "limit", in: "query", schema: { type: "integer", default: 2 } }],
+        },
+      },
+      "/manufacturers/{id}": {
+        get: {
+          operationId: "manufacturer-show",
+          parameters: [{ name: "id", in: "path", required: true, schema: { type: "integer" } }],
+        },
+      },
+      "/users/me": { get: { operationId: "usersme" } },
+    },
+  };
+  const byName = (n: string) => parseOpenapi(spec).find((e) => e.toolName === n)!;
+
+  it("adds limit, offset, search, sort and order, optional, after the declared ones", () => {
+    const q = byName("snipeit_gen_manufacturers").queryParams;
+    expect(q.map((p) => p.name)).toEqual(["name", ...LIST]);
+    for (const p of q.slice(1)) {
+      expect(p.required).toBe(false);
+      expect(p.description).toMatch(/not declared in the spec for this operation/);
+      expect((p.schema as { default?: unknown }).default).toBeUndefined();
+    }
+  });
+
+  it("keeps a parameter the spec declares and adds only the missing ones", () => {
+    const q = byName("snipeit_gen_models").queryParams;
+    expect(q.map((p) => p.name)).toEqual(LIST);
+    expect(q[0]!.schema).toEqual({ type: "integer", default: 2 });
+  });
+
+  it("leaves single-record GETs, /users/me and writes alone", () => {
+    expect(byName("snipeit_gen_manufacturer_show").queryParams).toEqual([]);
+    expect(byName("snipeit_gen_usersme").queryParams).toEqual([]);
+    expect(byName("snipeit_gen_manufacturers_store").queryParams).toEqual([]);
+  });
+});
