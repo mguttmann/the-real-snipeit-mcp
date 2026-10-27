@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  # release.yml runs this whole workflow on the tag commit before it
+  # builds anything, so a release passes the same gates as main.
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  # github.workflow is the caller's name when release.yml calls this
+  # workflow, so a release run never cancels or waits for a CI run.
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint + Typecheck + Test + Build (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        # 22 is the oldest supported line (engines >=22.12, see
+        # docs/adr/0001-mcp-sdk-version.md); production runs 24; 26 is current.
+        node: ["22", "24", "26"]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Format
+        run: npm run format:check
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit tests (includes the codegen drift test)
+        run: npm run test:unit
+      - name: Build
+        run: npm run build
+      - name: Gateway tool contract and protocol revisions
+        run: npm run test:contract
+      - name: Runtime dependencies have no high/critical advisories
+        run: npm audit --omit=dev --audit-level=high

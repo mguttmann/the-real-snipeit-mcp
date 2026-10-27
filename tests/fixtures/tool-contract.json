@@ -1,0 +1,2296 @@
+{
+  "source": "production tools/list (private gateway build); snipeit_gen_hardwareidrestore, snipeit_gen_maintenances_copy, snipeit_gen_maintenances_copy_1 gain required id (decision 6, they never worked)",
+  "tools": [
+    {
+      "name": "snipeit_audit_hardware",
+      "required": [
+        "asset_tag"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_bulk_checkout",
+      "required": [
+        "items"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_checkin_accessory",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_checkin_component",
+      "required": [
+        "checkin_qty",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_checkin_hardware",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_checkout_accessory",
+      "required": [
+        "assigned_user",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_checkout_component",
+      "required": [
+        "assigned_qty",
+        "assigned_to",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_checkout_consumable",
+      "required": [
+        "assigned_to",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_checkout_hardware",
+      "required": [
+        "checkout_to_type",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_checkout_license_seat",
+      "required": [
+        "license_id",
+        "seat_id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_create_hardware",
+      "required": [
+        "body"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_create_maintenance",
+      "required": [
+        "asset_id",
+        "asset_maintenance_type",
+        "start_date",
+        "title"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_delete_hardware",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessories",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessories_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessories_checkin",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessories_checkout",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessoriesid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessoriesid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessoriesid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessoriesid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_accessoriesidcheckedout",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_backups_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_backupsdownloadfile",
+      "required": [
+        "file"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_categories_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_categories_2",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_categoriesid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_categoriesid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_categoriesid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_categoriesid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_companies",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_companies_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_companiesid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_companiesid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_companiesid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_companiesid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_components",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_components_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_componentsid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_componentsid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_componentsid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_componentsid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_componentsidassets",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_componentsidcheckin",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_componentsidcheckout",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_consumables",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_consumables_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_consumables_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_consumablesid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_consumablesid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_consumablesid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_consumablesidcheckout",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_departments",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_departments_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_departments_edit",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_departmentsid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_departmentsid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_departmentsid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fields",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fields_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fields_2",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsets",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsetsid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsetsid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsetsid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsetsidfields",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsidassociate",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_fieldsiddisassociate",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_get_new_endpoint",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_get_new_endpoint_consumables_id_user",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_groups_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_groupsid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_groupsid_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_groupsid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_groupsid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_groupsid_4",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_by_asset_tag",
+      "required": [
+        "asset_tag"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_by_id",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_by_serial",
+      "required": [
+        "serial"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_checkin",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_checkout",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_create",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_delete",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_files_delete",
+      "required": [
+        "file_id",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_list",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_list_files",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_partial_update",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_update",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardware_upload_files",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardwareaudit",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardwareauditdue",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardwareauditoverdue",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardwareidfilesfile_id",
+      "required": [
+        "file_id",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardwareidlicenses",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_hardwareidrestore",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_licenses",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_licensesid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_licensesid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_licensesid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_licensesid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_licensesidseats",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_licensesidseatsseat_id",
+      "required": [
+        "id",
+        "seat_id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_licensesidseatsseat_id_2",
+      "required": [
+        "id",
+        "seat_id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_locations",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_locations_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_locations_2",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_locations_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_locationsid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_locationsid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_maintenances",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_maintenances_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_maintenances_copy",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_maintenances_copy_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_maintenancesid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_manufacturers",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_manufacturers_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_manufacturersid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_manufacturersid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_manufacturersid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_manufacturersid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_models",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_models_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_models_files_list",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_modelsid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_modelsid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_modelsid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_modelsid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_modelsidfiles",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_modelsidfilesfile_id",
+      "required": [
+        "file_id",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_post_auditid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_put_licensesidseatsseat_id",
+      "required": [
+        "id",
+        "seat_id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_reportsactivity",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_statuslabels",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_statuslabels_1",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_statuslabelsid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_statuslabelsid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_statuslabelsid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_statuslabelsid_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_statuslabelsidassetlist",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_suppliers",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_suppliersid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_testinput",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_update_fields",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_users",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_users_2",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_users_3",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_users_restore",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_usersid",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_usersid_1",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_usersid_2",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_usersidaccessories",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_usersidassets",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_usersideulas",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_usersidlicenses",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_gen_usersme",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_hardware_by_id",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_hardware_by_serial",
+      "required": [
+        "serial"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_hardware_by_tag",
+      "required": [
+        "tag"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_license_seats",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_location",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_statuslabel_assets",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_user",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_user_accessories",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_user_assets",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_get_user_licenses",
+      "required": [
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_accessories",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_audit_due",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_audit_overdue",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_components",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_consumables",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_hardware",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_licenses",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_locations",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_maintenances",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_statuslabels",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_list_users",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_me",
+      "required": [],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_raw_request",
+      "required": [
+        "method",
+        "path"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_search_hardware",
+      "required": [
+        "query"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "snipeit_update_hardware",
+      "required": [
+        "body",
+        "id"
+      ],
+      "defaults": {},
+      "annotations": {
+        "readOnlyHint": false,
+        "destructiveHint": true,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    }
+  ]
+}

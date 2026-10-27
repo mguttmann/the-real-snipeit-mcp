@@ -1,0 +1,36 @@
+the-real-snipeit-mcp
+Copyright (c) 2026 Manuel Guttmann (mguttmann)
+
+This project is licensed under the MIT License (see LICENSE), with the
+exception below.
+
+Unofficial project
+------------------
+This is an unofficial, community-maintained project. It is not
+affiliated with, endorsed by, sponsored by or supported by Grokability,
+Inc. or the Snipe-IT project. Do not contact Snipe-IT support about this
+software.
+
+Snipe-IT API description (not covered by the MIT License)
+---------------------------------------------------------
+vendor/snipe-it-rest-api.json is the OpenAPI description of the Snipe-IT
+REST API as published by the Snipe-IT API documentation
+(https://snipe-it.readme.io, downloaded from
+https://snipe-it.readme.io/openapi/snipe-it-rest-api.json by
+scripts/refresh-spec.sh, which only removes the documentation explorer's
+Authorization header entries). The file itself states no license, and
+this project has not verified under which terms it is published. It is
+included only for interoperability: the code generator reads it to
+build tools that call the Snipe-IT REST API. It is NOT licensed under
+the MIT License of this project, and no rights in it are granted by this
+repository; all rights remain with their owners.
+
+Tool names, titles, descriptions and parameter descriptions of the
+generated tools (src/tools/generated, and dist/tools/generated in the
+npm package) are derived from that description.
+
+Trademarks
+----------
+"Snipe-IT" and "Grokability" are trademarks of their respective owners.
+They are used here only to identify the API this software works with.
+All other trademarks are the property of their respective owners.

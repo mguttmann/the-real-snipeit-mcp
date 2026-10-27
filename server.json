@@ -1,0 +1,100 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.mguttmann/the-real-snipeit-mcp",
+  "title": "Snipe-IT (unofficial)",
+  "description": "Unofficial MCP server for the Snipe-IT REST API: assets, users, licenses, guarded writes.",
+  "repository": {
+    "url": "https://github.com/mguttmann/the-real-snipeit-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/mguttmann/the-real-snipeit-mcp#readme",
+  "version": "0.2.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "the-real-snipeit-mcp",
+      "version": "0.2.1",
+      "runtimeHint": "npx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "SNIPEIT_API_BASE",
+          "description": "Snipe-IT API base URL including /api/v1, for example https://snipe-it.example.com/api/v1. Use https.",
+          "isRequired": true,
+          "format": "string"
+        },
+        {
+          "name": "SNIPEIT_API_TOKEN",
+          "description": "Snipe-IT Personal API Token (JWT), from Snipe-IT > User > Manage API Keys. It acts with the rights of its user.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "SNIPEIT_CONFIRM_WRITES",
+          "description": "Write guard, on by default: write tools return a preview until called again with confirm: \"YES\". Only false, 0, no or off disable it.",
+          "isRequired": false,
+          "format": "boolean",
+          "default": "true"
+        },
+        {
+          "name": "SNIPEIT_TIMEOUT_MS",
+          "description": "Timeout in ms per HTTP attempt, including the body read (positive integer).",
+          "isRequired": false,
+          "format": "number",
+          "default": "30000"
+        },
+        {
+          "name": "SNIPEIT_LOG_LEVEL",
+          "description": "Log level on stderr: debug, info, warn or error.",
+          "isRequired": false,
+          "format": "string",
+          "default": "info",
+          "choices": [
+            "debug",
+            "info",
+            "warn",
+            "error"
+          ]
+        },
+        {
+          "name": "SNIPEIT_MAX_RESULT_BYTES",
+          "description": "Cap for one tool result in bytes (serialized JSON), minimum 65536. Larger results come back shortened with truncated: true.",
+          "isRequired": false,
+          "format": "number",
+          "default": "1048576"
+        },
+        {
+          "name": "SNIPEIT_CALL_DEADLINE_MS",
+          "description": "Overall deadline for one tool call in ms, across retries and all: true pagination. 0 means none.",
+          "isRequired": false,
+          "format": "number",
+          "default": "0"
+        },
+        {
+          "name": "SNIPEIT_REDACT_PII",
+          "description": "true masks personal data (email, username, names of people, phone, address, employee number) in tool results.",
+          "isRequired": false,
+          "format": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "SNIPEIT_READ_ONLY",
+          "description": "true refuses every write at runtime; all tools stay registered and reads work.",
+          "isRequired": false,
+          "format": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "SNIPEIT_REQUIRE_PREVIEW",
+          "description": "true (with the write guard on): confirm: \"YES\" executes only after a preview of the same request.",
+          "isRequired": false,
+          "format": "boolean",
+          "default": "false"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+name: Bug report
+description: Something doesn't work as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please don't paste your real Snipe-IT API token or any private data; redact before submitting.
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: Output of `npm list the-real-snipeit-mcp` or the value in your `package.json`.
+      placeholder: "0.x.y"
+    validations:
+      required: true
+
+  - type: input
+    id: node
+    attributes:
+      label: Node version
+      description: Output of `node --version`.
+      placeholder: "v22.x"
+    validations:
+      required: true
+
+  - type: input
+    id: snipeit
+    attributes:
+      label: Snipe-IT version
+      description: From your Snipe-IT instance → About.
+      placeholder: "8.2.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Smallest set of steps that triggers the bug. Include the tool you called and the arguments (redact sensitive values).
+      placeholder: |
+        1. Called `snipeit_checkout_hardware` with `{ id: 42, checkout_to_type: "user", assigned_user: 7 }`
+        2. Got error: ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Set `SNIPEIT_LOG_LEVEL=debug` and paste the relevant lines. Bodies and tokens are never logged.
+      render: text
